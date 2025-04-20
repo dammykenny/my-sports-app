@@ -1,128 +1,143 @@
-// src/components/PlayerOverview.js
-import React, { useState, useEffect } from 'react';
-import { 
-  getPlayerHonours, 
-  getPlayerMilestones, 
-  getPlayerFormerTeams, 
-  getPlayerContracts, 
-  getEventPlayerResults 
+import React, { useEffect, useState } from 'react';
+import {
+  getPlayerHonours,
+  getPlayerMilestones,
+  getPlayerFormerTeams,
+  getPlayerContracts,
+  getEventPlayerResults,
 } from '../services/sportsAPI';
 
-
-const PlayerOverview = ({ playerId, eventId }) => {
+const PlayerOverview = ({ playerId }) => {
   const [honours, setHonours] = useState([]);
   const [milestones, setMilestones] = useState([]);
   const [formerTeams, setFormerTeams] = useState([]);
   const [contracts, setContracts] = useState([]);
   const [eventResults, setEventResults] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
+    if (!playerId) return;
+
+    // Reset all data when a new player is selected
+    setHonours([]);
+    setMilestones([]);
+    setFormerTeams([]);
+    setContracts([]);
+    setEventResults([]);
+    setIsLoading(true);
+
+    const fetchPlayerData = async () => {
       try {
-        setLoading(true);
         const [
-          honoursData, 
-          milestonesData, 
-          formerTeamsData, 
-          contractsData, 
-          eventResultsData
+          honoursData,
+          milestonesData,
+          formerTeamsData,
+          contractsData,
+          eventsData,
         ] = await Promise.all([
           getPlayerHonours(playerId),
           getPlayerMilestones(playerId),
           getPlayerFormerTeams(playerId),
           getPlayerContracts(playerId),
-          eventId ? getEventPlayerResults(eventId) : Promise.resolve([]),
+          getEventPlayerResults(playerId),
         ]);
 
-        setHonours(honoursData);
-        setMilestones(milestonesData);
-        setFormerTeams(formerTeamsData);
-        setContracts(contractsData);
-        setEventResults(eventResultsData);
-      } catch (err) {
-        console.error(err);
-        setError('Failed to load player data.');
+        setHonours(honoursData || []);
+        setMilestones(milestonesData || []);
+        setFormerTeams(formerTeamsData || []);
+        setContracts(contractsData || []);
+        setEventResults(eventsData || []);
+      } catch (error) {
+        console.error('Error fetching player data:', error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
-    if (playerId) {
-      fetchData();
-    }
-  }, [playerId, eventId]);
+    fetchPlayerData();
+  }, [playerId]);
 
-  if (loading) return <div className="p-4 text-center">Loading player info...</div>;
-  if (error) return <div className="p-4 text-red-600 text-center">{error}</div>;
-
-  const Section = ({ title, data, renderItem }) => (
-    <div className="mb-6">
-      <h3 className="text-lg font-semibold text-gray-800">{title}:</h3>
-      {data.length > 0 ? (
-        <ul className="list-disc pl-5 mt-2 space-y-1 text-gray-700">
-          {data.map(renderItem)}
-        </ul>
-      ) : (
-        <p className="text-gray-500">No {title.toLowerCase()} available.</p>
-      )}
-    </div>
-  );
+  if (!playerId) return null;
 
   return (
-    <div className="p-4 border rounded-md bg-white shadow">
-      <h2 className="text-2xl font-bold mb-6">
-        Player Overview - {honours[0]?.strPlayer || `Player ID: ${playerId}`}
-      </h2>
+    <div className="mt-8">
+      <h2 className="text-2xl font-semibold mb-4">Player Overview</h2>
+      {isLoading ? (
+        <div className="text-gray-500">Loading...</div>
+      ) : (
+        <>
+          <div className="mb-6">
+            <h3 className="text-lg font-bold">Honours:</h3>
+            {honours.length > 0 ? (
+              <ul className="list-disc list-inside space-y-1">
+                {honours.map((honour, index) => (
+                  <li key={index}>
+                    {honour.strHonour} - {honour.strTeam} ({honour.strSeason})
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No honours available.</p>
+            )}
+          </div>
 
-      <Section
-        title="Honours"
-        data={honours}
-        renderItem={(honour) => (
-          <li key={honour.id}>
-            {honour.strHonour} - {honour.strTeam} ({honour.strSeason})
-          </li>
-        )}
-      />
+          <div className="mb-6">
+            <h3 className="text-lg font-bold">Milestones:</h3>
+            {milestones.length > 0 ? (
+              <ul className="list-disc list-inside space-y-1">
+                {milestones.map((milestone, index) => (
+                  <li key={index}>{milestone.strMilestone}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>No milestones available.</p>
+            )}
+          </div>
 
-      <Section
-        title="Milestones"
-        data={milestones}
-        renderItem={(milestone) => (
-          <li key={milestone.id}>
-            {milestone.strMilestone} - {milestone.strSeason}
-          </li>
-        )}
-      />
+          <div className="mb-6">
+            <h3 className="text-lg font-bold">Former Teams:</h3>
+            {formerTeams.length > 0 ? (
+              <ul className="list-disc list-inside space-y-1">
+                {formerTeams.map((team, index) => (
+                  <li key={index}>{team.strTeam}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>No former teams available.</p>
+            )}
+          </div>
 
-      <Section
-        title="Former Teams"
-        data={formerTeams}
-        renderItem={(team) => (
-          <li key={team.id}>{team.strTeam}</li>
-        )}
-      />
+          <div className="mb-6">
+            <h3 className="text-lg font-bold">Contracts:</h3>
+            {contracts.length > 0 ? (
+              <ul className="list-disc list-inside space-y-1">
+                {contracts.map((contract, index) => (
+                  <li key={index}>
+                    {contract.strTeam} ({contract.dateSigned || ' - '} - {contract.dateEnd || ' - '})
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No contract info available.</p>
+            )}
+          </div>
 
-      <Section
-        title="Contracts"
-        data={contracts}
-        renderItem={(contract) => (
-          <li key={contract.id}>
-            {contract.strTeam} ({contract.strStart} - {contract.strEnd})
-          </li>
-        )}
-      />
-
-      <Section
-        title="Event Results"
-        data={eventResults}
-        renderItem={(result) => (
-          <li key={result.id}>
-            {result.strEvent} - {result.strResult}
-          </li>
-        )}
-      />
+          <div className="mb-6">
+            <h3 className="text-lg font-bold">Event Results:</h3>
+            {eventResults.length > 0 ? (
+              <ul className="list-disc list-inside space-y-1">
+                {eventResults.map((event, index) => (
+                  <li key={index}>
+                    {event.strEvent} - {event.intGoals} Goals
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No event results available.</p>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };
