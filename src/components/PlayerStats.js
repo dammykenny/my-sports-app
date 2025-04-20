@@ -1,21 +1,21 @@
 // src/components/PlayerStats.js
 import React from 'react';
 
-const PlayerStats = ({ news = [] }) => {
+const PlayerStats = ({ news }) => {
   return (
-    <div className="mt-6 p-4 bg-white shadow-md rounded-md">
-      <h3 className="text-lg font-semibold text-gray-800 mb-2">Latest News</h3>
+    <div className="p-4 bg-white shadow rounded my-6">
+      <h2 className="text-2xl font-semibold mb-4">Latest News</h2>
 
-      {news.length > 0 ? (
-        <ul className="list-disc pl-5 space-y-2 text-gray-700">
+      {news && news.length > 0 ? (
+        <ul className="space-y-3">
           {news.map((item) => (
-            <li key={item.id}>
-              {item.strDescriptionEN || 'No description available'}
+            <li key={item.id} className="border-b pb-2">
+              <p className="text-gray-800">{item.strDescriptionEN}</p>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="text-gray-500">No news available for this player.</p>
+        <p className="text-gray-500 italic">No recent news available for this player.</p>
       )}
     </div>
   );

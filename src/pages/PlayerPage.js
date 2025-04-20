@@ -1,28 +1,58 @@
-import React, { useState } from 'react';
+// src/pages/PlayerPage.js
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PlayerOverview from '../components/PlayerOverview';
 import PlayerStats from '../components/PlayerStats';
 import PlayerTrophies from '../components/PlayerTrophies';
+import { getPlayerHonours, getPlayerMilestones } from '../services/sportsAPI';
 
 const PlayerPage = () => {
   const { id: playerId, eventId } = useParams();
 
-  // Replace these with actual fetched data later
-  const [news] = useState([
-    { id: '1', strDescriptionEN: 'Player signed a new contract with Real Madrid.' },
-    { id: '2', strDescriptionEN: 'Player hit 100 career goals milestone!' },
-  ]);
+  const [honours, setHonours] = useState([]);
+  const [milestones, setMilestones] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const [scores] = useState([
-    { id: '1', strEvent: 'Real Madrid vs Barcelona', intHomeScore: 2, intAwayScore: 1 },
-    { id: '2', strEvent: 'Real Madrid vs Atletico', intHomeScore: 3, intAwayScore: 0 },
-  ]);
+  useEffect(() => {
+    const fetchPlayerData = async () => {
+      setLoading(true);
+      setError('');
+
+      try {
+        const [honoursData, milestonesData] = await Promise.all([
+          getPlayerHonours(playerId),
+          getPlayerMilestones(playerId),
+        ]);
+
+        setHonours(honoursData);
+        setMilestones(milestonesData);
+      } catch (err) {
+        setError('Failed to load player data.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (playerId) {
+      fetchPlayerData();
+    }
+  }, [playerId]);
+
+  if (loading) {
+    return <div className="p-4">Loading player data...</div>;
+  }
+
+  if (error) {
+    return <div className="p-4 text-red-600">{error}</div>;
+  }
 
   return (
-    <div>
+    <div className="space-y-6 p-4">
       <PlayerOverview playerId={playerId} eventId={eventId} />
-      <PlayerStats news={news} />
-      <PlayerTrophies scores={scores} />
+      <PlayerStats news={milestones} />
+      <PlayerTrophies scores={honours} />
     </div>
   );
 };

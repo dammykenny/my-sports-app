@@ -1,22 +1,24 @@
 // src/components/PlayerTrophies.js
 import React from 'react';
 
-const PlayerTrophies = ({ scores = [] }) => {
+const PlayerTrophies = ({ scores }) => {
   return (
-    <div className="mt-6 p-4 bg-white shadow-md rounded-md">
-      <h3 className="text-lg font-semibold text-gray-800 mb-2">Recent Match Scores</h3>
+    <div className="p-4 bg-white shadow rounded my-6">
+      <h2 className="text-2xl font-semibold mb-4">Recent Match Results</h2>
 
-      {scores.length > 0 ? (
-        <ul className="list-disc pl-5 space-y-2 text-gray-700">
-          {scores.map((score) => (
-            <li key={score.id}>
-              <span className="font-medium">{score.strEvent}:</span>{' '}
-              {score.intHomeScore} - {score.intAwayScore}
+      {scores && scores.length > 0 ? (
+        <ul className="space-y-3">
+          {scores.map((match) => (
+            <li key={match.id} className="border-b pb-2">
+              <p className="text-gray-800 font-medium">{match.strEvent}</p>
+              <p className="text-gray-600">
+                {match.intHomeScore} - {match.intAwayScore}
+              </p>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="text-gray-500">No recent scores available.</p>
+        <p className="text-gray-500 italic">No match results available.</p>
       )}
     </div>
   );

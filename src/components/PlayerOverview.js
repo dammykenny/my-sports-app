@@ -8,6 +8,7 @@ import {
   getEventPlayerResults 
 } from '../services/sportsAPI';
 
+
 const PlayerOverview = ({ playerId, eventId }) => {
   const [honours, setHonours] = useState([]);
   const [milestones, setMilestones] = useState([]);
@@ -107,19 +108,21 @@ const PlayerOverview = ({ playerId, eventId }) => {
         title="Contracts"
         data={contracts}
         renderItem={(contract) => (
-          <li key={contract.id}>{contract.strContract}</li>
+          <li key={contract.id}>
+            {contract.strTeam} ({contract.strStart} - {contract.strEnd})
+          </li>
         )}
       />
 
-      {eventId && (
-        <Section
-          title={`Event Results (ID: ${eventId})`}
-          data={eventResults}
-          renderItem={(result) => (
-            <li key={result.id}>{result.strResult}</li>
-          )}
-        />
-      )}
+      <Section
+        title="Event Results"
+        data={eventResults}
+        renderItem={(result) => (
+          <li key={result.id}>
+            {result.strEvent} - {result.strResult}
+          </li>
+        )}
+      />
     </div>
   );
 };
