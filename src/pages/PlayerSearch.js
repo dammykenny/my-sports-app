@@ -1,7 +1,11 @@
 // src/pages/PlayerSearch.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { searchPlayerByName } from '../services/sportsAPI';
 import PlayerOverview from '../components/PlayerOverview';
+import countries from 'i18n-iso-countries';
+import enLocale from 'i18n-iso-countries/langs/en.json';
+
+countries.registerLocale(enLocale); // Register English names
 
 const PlayerSearch = () => {
   const [query, setQuery] = useState('');
@@ -20,7 +24,7 @@ const PlayerSearch = () => {
     try {
       setLoading(true);
       setError('');
-      setSelectedPlayer(null); // Reset selected player
+      setSelectedPlayer(null);
       const results = await searchPlayerByName(query);
       if (results && results.length > 0) {
         setPlayers(results);
@@ -44,8 +48,16 @@ const PlayerSearch = () => {
 
   const handleSelectPlayer = (player) => {
     setSelectedPlayer(player);
-    setPlayers([]); // Clear player search results
-    setQuery(''); // Clear input field if you want
+    setPlayers([]);
+    setQuery('');
+  };
+
+  const getFlagUrl = (countryName) => {
+    if (!countryName) return null;
+    const countryCode = countries.getAlpha2Code(countryName, 'en');
+    return countryCode
+      ? `https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`
+      : null;
   };
 
   return (
@@ -72,30 +84,40 @@ const PlayerSearch = () => {
 
       {!selectedPlayer && (
         <div className="grid gap-4">
-         {players.map((player) => (
-          <div
-            key={player.idPlayer}
-            className="flex items-center space-x-4 p-4 border rounded shadow-sm hover:bg-gray-50 transition cursor-pointer"
-            onClick={() => handleSelectPlayer(player)}
-          >
-            {player.strCutout || player.strThumb ? (
-              <img
-                src={player.strCutout || player.strThumb}
-                alt={player.strPlayer}
-                className="w-12 h-12 rounded-full object-cover"
-              />
-            ) : (
-              <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-sm text-white">
-                {player.strPlayer?.charAt(0)}
+          {players.map((player) => {
+            const flagUrl = getFlagUrl(player.strNationality);
+            return (
+              <div
+                key={player.idPlayer}
+                className="flex items-center space-x-4 p-4 border rounded shadow-sm hover:bg-gray-50 transition cursor-pointer"
+                onClick={() => handleSelectPlayer(player)}
+              >
+                {player.strCutout || player.strThumb ? (
+                  <img
+                    src={player.strCutout || player.strThumb}
+                    alt={player.strPlayer}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-sm text-white">
+                    {player.strPlayer?.charAt(0)}
+                  </div>
+                )}
+                <div className="flex-1">
+                  <h3 className="text-base font-semibold text-gray-900">{player.strPlayer}</h3>
+                  <p className="text-sm text-gray-500">{player.strTeam || 'No team info'}</p>
+                </div>
+                {flagUrl && (
+                  <img
+                    src={flagUrl}
+                    alt={player.strNationality}
+                    className="w-6 h-4 object-cover border"
+                    title={player.strNationality}
+                  />
+                )}
               </div>
-            )}
-            <div>
-              <h3 className="text-base font-semibold text-gray-900">{player.strPlayer}</h3>
-              <p className="text-sm text-gray-500">{player.strTeam || 'No team info'}</p>
-            </div>
-          </div>
-        ))}
-
+            );
+          })}
         </div>
       )}
 
