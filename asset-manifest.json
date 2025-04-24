@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/my-sports-app/static/css/main.97692715.css",
+    "main.js": "/my-sports-app/static/js/main.13657771.js",
+    "index.html": "/my-sports-app/index.html",
+    "main.97692715.css.map": "/my-sports-app/static/css/main.97692715.css.map",
+    "main.13657771.js.map": "/my-sports-app/static/js/main.13657771.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.97692715.css",
+    "static/js/main.13657771.js"
+  ]
+}
