@@ -72,28 +72,30 @@ const PlayerSearch = () => {
 
       {!selectedPlayer && (
         <div className="grid gap-4">
-          {players.map((player) => (
-            <div
+         {players.map((player) => (
+          <div
             key={player.idPlayer}
-            className="p-4 border rounded hover:bg-gray-100 cursor-pointer flex items-center space-x-4"
+            className="flex items-center space-x-4 p-4 border rounded shadow-sm hover:bg-gray-50 transition cursor-pointer"
             onClick={() => handleSelectPlayer(player)}
           >
-            <img
-              src={
-                player.strCutout ||
-                player.strThumb ||
-                'https://via.placeholder.com/40x40?text=No+Image'
-              }
-              alt={player.strPlayer}
-              className="w-16 h-16 rounded-full object-cover bg-gray-200 flex-shrink-0"
-            />
+            {player.strCutout || player.strThumb ? (
+              <img
+                src={player.strCutout || player.strThumb}
+                alt={player.strPlayer}
+                className="w-12 h-12 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-sm text-white">
+                {player.strPlayer?.charAt(0)}
+              </div>
+            )}
             <div>
-              <h3 className="text-md font-medium">{player.strPlayer}</h3>
-              <p className="text-sm text-gray-600">{player.strTeam}</p>
+              <h3 className="text-base font-semibold text-gray-900">{player.strPlayer}</h3>
+              <p className="text-sm text-gray-500">{player.strTeam || 'No team info'}</p>
             </div>
           </div>
-          
-          ))}
+        ))}
+
         </div>
       )}
 
