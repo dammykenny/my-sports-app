@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/my-sports-app/static/css/main.ccc310d2.css",
-    "main.js": "/my-sports-app/static/js/main.feb57f15.js",
+    "main.css": "/my-sports-app/static/css/main.fbbd0714.css",
+    "main.js": "/my-sports-app/static/js/main.8042af18.js",
     "index.html": "/my-sports-app/index.html",
-    "main.ccc310d2.css.map": "/my-sports-app/static/css/main.ccc310d2.css.map",
-    "main.feb57f15.js.map": "/my-sports-app/static/js/main.feb57f15.js.map"
+    "main.fbbd0714.css.map": "/my-sports-app/static/css/main.fbbd0714.css.map",
+    "main.8042af18.js.map": "/my-sports-app/static/js/main.8042af18.js.map"
   },
   "entrypoints": [
-    "static/css/main.ccc310d2.css",
-    "static/js/main.feb57f15.js"
+    "static/css/main.fbbd0714.css",
+    "static/js/main.8042af18.js"
   ]
 }
