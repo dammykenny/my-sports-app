@@ -1,24 +1,19 @@
-// src/components/PlayerTrophies.js
-import React from 'react';
+import React from "react";
 
-const PlayerTrophies = ({ scores }) => {
+const PlayerTrophies = ({ honours }) => {
   return (
-    <div className="p-4 bg-white shadow rounded my-6">
-      <h2 className="text-2xl font-semibold mb-4">Recent Match Results</h2>
-
-      {scores && scores.length > 0 ? (
-        <ul className="space-y-3">
-          {scores.map((match) => (
-            <li key={match.id} className="border-b pb-2">
-              <p className="text-gray-800 font-medium">{match.strEvent}</p>
-              <p className="text-gray-600">
-                {match.intHomeScore} - {match.intAwayScore}
-              </p>
+    <div>
+      <h2 className="text-xl font-bold mb-4">Trophies</h2>
+      {honours && honours.length > 0 ? (
+        <ul>
+          {honours.map((honour, index) => (
+            <li key={index} className="mb-2">
+              🏆 {honour.strHonour} - {honour.strTeam} ({honour.intYear})
             </li>
           ))}
         </ul>
       ) : (
-        <p className="text-gray-500 italic">No match results available.</p>
+        <p>No trophies found.</p>
       )}
     </div>
   );

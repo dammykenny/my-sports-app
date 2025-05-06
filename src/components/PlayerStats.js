@@ -1,21 +1,19 @@
-// src/components/PlayerStats.js
-import React from 'react';
+import React from "react";
 
-const PlayerStats = ({ news }) => {
+const PlayerStats = ({ milestones }) => {
   return (
-    <div className="p-4 bg-white shadow rounded my-6">
-      <h2 className="text-2xl font-semibold mb-4">Latest News</h2>
-
-      {news && news.length > 0 ? (
-        <ul className="space-y-3">
-          {news.map((item) => (
-            <li key={item.id} className="border-b pb-2">
-              <p className="text-gray-800">{item.strDescriptionEN}</p>
+    <div>
+      <h2 className="text-xl font-bold mb-4">Player Milestones</h2>
+      {milestones && milestones.length > 0 ? (
+        <ul>
+          {milestones.map((milestone, index) => (
+            <li key={index} className="mb-2">
+              <strong>{milestone.strMilestone}:</strong> {milestone.strDescription}
             </li>
           ))}
         </ul>
       ) : (
-        <p className="text-gray-500 italic">No recent news available for this player.</p>
+        <p>No milestones available.</p>
       )}
     </div>
   );

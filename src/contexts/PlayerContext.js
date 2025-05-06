@@ -1,15 +1,16 @@
-import React, { createContext, useState } from 'react';
+// src/contexts/PlayerContext.js
+import React, { createContext, useState, useContext } from "react";
 
-// 1️⃣ Create the context
-export const TeamContext = createContext();
+export const PlayerContext = createContext();
 
-// 2️⃣ Create the provider component
-export const TeamProvider = ({ children }) => {
-  const [favoritePlayers, setFavoritePlayers] = useState([]);
+export const PlayerProvider = ({ children }) => {
+  const [playerId, setPlayerId] = useState(null);
 
   return (
-    <TeamContext.Provider value={{ favoritePlayers, setFavoritePlayers }}>
+    <PlayerContext.Provider value={{ playerId, setPlayerId }}>
       {children}
-    </TeamContext.Provider>
+    </PlayerContext.Provider>
   );
 };
+
+export const usePlayer = () => useContext(PlayerContext);

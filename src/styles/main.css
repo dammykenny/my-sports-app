@@ -1,87 +1,87 @@
 /* src/styles/main.css */
 .home-container {
-    padding: 20px;
-    max-width: 1000px;
-    margin: 0 auto;
-  }
-  
-  .home-title {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.home-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.home-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Space between inputs and button */
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+@media (min-width: 640px) {
   .home-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Space between inputs and button */
-    margin-bottom: 20px;
-    align-items: center;
+    flex-direction: row;
+    gap: 20px; /* Larger gap on desktop */
   }
-  
-  @media (min-width: 640px) {
-    .home-form {
-      flex-direction: row;
-      gap: 20px; /* Larger gap on desktop */
-    }
-  }
-  
-  .home-input {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-    max-width: 250px; /* Fixed width for inputs */
-  }
-  
-  .home-input:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-  }
-  
-  .home-button {
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-    max-width: 120px; /* Fixed width for button */
-  }
-  
-  .home-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .home-error {
-    color: red;
-    text-align: center;
-    margin-bottom: 15px;
-  }
-  
+}
+
+.home-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 250px; /* Fixed width for inputs */
+}
+
+.home-input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.home-button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 120px; /* Fixed width for button */
+}
+
+.home-button:hover {
+  background-color: #0056b3;
+}
+
+.home-error {
+  color: red;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
   .home-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  @media (min-width: 768px) {
-    .home-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
+}
+
+@media (min-width: 1024px) {
+  .home-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
-  
-  @media (min-width: 1024px) {
-    .home-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-  
-  .home-empty {
-    text-align: center;
-    color: #666;
-    margin-top: 15px;
-  }
+}
+
+.home-empty {
+  text-align: center;
+  color: #666;
+  margin-top: 15px;
+}

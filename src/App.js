@@ -1,21 +1,27 @@
+// src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainLayout from './pages/MainLayout';
-import PlayerSearch from './pages/PlayerSearch';
 import PlayerPage from './pages/PlayerPage';
+import PlayerSearch from './pages/PlayerSearch';
+import PlayerStatsPage from './pages/PlayerStatsPage';
+import PlayerTrophiesPage from './pages/PlayerTrophiesPage';
+import { PlayerProvider } from './contexts/PlayerContext';
 
 const App = () => {
   return (
-    <Router basename="/my-sports-app"> {/* ✅ Add this */}
-      <Routes>
-        <Route path="/" element={<MainLayout />}>
-          <Route index element={<PlayerSearch />} />
-          <Route path="stats" element={<div className="p-4">Stats Page Coming Soon</div>} />
-          <Route path="trophies" element={<div className="p-4">Trophies Page Coming Soon</div>} />
-          <Route path="player/:id/:eventId" element={<PlayerPage />} />
-        </Route>
-      </Routes>
-    </Router>
+    <PlayerProvider>
+      <Router basename="/my-sports-app">
+        <Routes>
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<PlayerSearch />} />
+            <Route path="/player/:id/:eventId" element={<PlayerPage />} />
+            <Route path="/stats/:id" element={<PlayerStatsPage />} />
+            <Route path="/trophies/:id" element={<PlayerTrophiesPage />} />
+          </Route>
+        </Routes>
+      </Router>
+    </PlayerProvider>
   );
 };
 
